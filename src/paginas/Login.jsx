@@ -1,4 +1,5 @@
-import { useState } from "react";
+import {useState } from "react";
+
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import Input from "../componentes/Input";
@@ -7,12 +8,16 @@ import Logo from "../componentes/Logo";
 import Container from "../componentes/ContainerLogin";
 import StyledLink from "../componentes/Links";
 
+import Context from "../componentes/Context/contex";
+import React, { useContext} from "react";
+import imagemLogo from '../imagens/logo.svg'
 
 
 
 export default function Login(){
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");  
+    const [password, setPassword] = useState("");
+    const {dados, setDados} = useContext(Context) 
 
     const navigate = useNavigate();
 
@@ -29,10 +34,13 @@ export default function Login(){
     promise.then( resposta => {
       
       console.log(resposta.data.token);
-      
-      setToken(resposta.data.token);
+      const Token = {...dados}
+      Token.token = "Bearer " + resposta.data.token;
+      setDados(Token)
 
-      navigate('/');
+
+      navigate('/Hoje');
+      
 
     });
     promise.catch( erro => alert(erro.response.data.message));
@@ -41,8 +49,7 @@ export default function Login(){
     return (
         <Container>
             <Logo>
-                <img src="" alt="" />
-                <h1>TrackIt</h1>
+                <img src={imagemLogo} alt="" />
             </Logo>
           
           <form onSubmit={logar}>

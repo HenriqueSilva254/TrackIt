@@ -1,64 +1,115 @@
+import React, { useContext } from "react";
 import { useState } from "react"
 import styled from "styled-components"
 import Input from "./Input"
 import Button from "../componentes/button";
 import Context from "./Context/contex";
-import React, { useContext} from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import ListarTarefas from "./ListarTarefas";
 
-export default function NovoHabito(){
+
+export default function NovoHabito() {
     const [Dias, setDias] = useState([
-        {dia:"D" ,cor:"white"}, 
-        {dia:"S" ,cor:"white"}, 
-        {dia:"T" ,cor:"white"}, 
-        {dia:"Q" ,cor:"white"}, 
-        {dia:"Q" ,cor:"white"}, 
-        {dia:"S" ,cor:"white"}, 
-        {dia:"S" ,cor:"white"}
+        { dia: "D", cor: "white" },
+        { dia: "S", cor: "white" },
+        { dia: "T", cor: "white" },
+        { dia: "Q", cor: "white" },
+        { dia: "Q", cor: "white" },
+        { dia: "S", cor: "white" },
+        { dia: "S", cor: "white" }
     ])
-    const [tarefa, setTarefa] = useState('')
-    const {display, setDisplay} = useContext(Context)
+    const [ArrayDias, setArrayDias] = useState([])
+    const [name, setname] = useState('')
+    const { dados, setDados } = useContext(Context)
+    const navigate = useNavigate();
     
-    
-    return  (
-    <HabitosCreat display={display}>
-    <Container>
-    <Input 
-    type="text" 
-    placeholder="nome do hábito"
-    required
-    value={tarefa}
-    onChange={ (e) => setTarefa(e.target.value)}
-    />
-    <ContainerDias>
-        {Dias.map((data, index) => 
-        <Divdias 
-        key={index}
-        onClick={() => mudaCorDia(index)} 
-        cores={data.cor}
-        >
-            {data.dia}
-        </Divdias>)}
 
-    </ContainerDias>
+    return (
+        <div>
+            <HabitosCreat display={dados.display}>
+                <Container>
+                    <Input
+                        type="text"
+                        placeholder="nome do hábito"
+                        required
+                        value={name}
+                        onChange={(e) => setname(e.target.value)}
+                    />
+                    <ContainerDias>
+                        {Dias.map((data, index) =>
+                            <Divdias
+                                key={index}
+                                onClick={() => mudaCorDia(index)}
+                                cores={data.cor}
+                            >
+                                {data.dia}
+                            </Divdias>)}
 
-    <Save>
-        <div onClick={desabiliatar}>Cancelar</div>
-    <Button >Salvar</Button>
-    </Save>
-    </Container>
+                    </ContainerDias>
 
-</HabitosCreat>
-)
-function desabiliatar(){
-    if(display !== "none"){
-        setDisplay("none")
+                    <Save>
+                        <div onClick={desabiliatar}>Cancelar</div>
+                        <Button onClick={DarPost}>Salvar</Button>
+                    </Save>
+                </Container>
+
+            </HabitosCreat>
+            <ListarTarefas />
+            <h2>{dados.texto}</h2>
+        </div>
+    )
+    function DarPost(e) {
+        e.preventDefault();
+
+        const Url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        const token = dados.token
+        const body = {
+            name,
+            days: ArrayDias
+        }
+        const config = {
+            headers: {
+                Authorization: token
+            }
+        }
+        const promisse = axios.post(Url, body, config)
+
+        promisse.then(resposta => {
+            alert("Tarefa Salva cm sucesso")
+            console.log(resposta)
+            navigate('/Hoje')
+            ListarTarefas()
+        })
+        promisse.catch(erro => alert(erro.response.data.message))
     }
-}
-function mudaCorDia(index){
-    const Novacor = [...Dias]
-    Novacor[index].cor = "#CFCFCF"
-    setDias(Novacor)
-}
+    function desabiliatar() {
+        if (dados.display !== "none") {
+            const Arraydados = { ...dados }
+            Arraydados.display = "none"
+            setDados(Arraydados)
+
+        }
+    }
+
+   
+
+
+    function mudaCorDia(index) {
+        const Novacor = [...Dias]
+        let novoDia = 0
+        if (Novacor[index].cor !== "#CFCFCF") {
+            Novacor[index].cor = "#CFCFCF"
+            setDias(Novacor)
+            ArrayDias.push(index)
+
+        } else {
+            Novacor[index].cor = "white"
+            setDias(Novacor)
+            novoDia = ArrayDias.pop()
+        }
+
+    }
 
 }
 const HabitosCreat = styled.form`
@@ -123,5 +174,5 @@ const Divdias = styled.div`
     font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
-    color: ${props => props.cores === "white"? '#D5D5D5':'white'};
+    color: ${props => props.cores === "white" ? '#D5D5D5' : 'white'};
 `

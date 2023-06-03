@@ -6,6 +6,7 @@ import Button from "../componentes/button";
 import Logo from "../componentes/Logo";
 import Container from "../componentes/ContainerLogin";
 import StyledLink from "../componentes/Links";
+import imagemLogo from '../imagens/logo.svg'
 
 function Cadastro(){
     const [name, setName] = useState("");
@@ -37,8 +38,7 @@ function Cadastro(){
     return (
         <Container>
         <Logo>
-            <img src="" alt="" />
-            <h1>TrackIt</h1>
+            <img src={imagemLogo}/>
         </Logo>
       
       <form onSubmit={cadastrar}>

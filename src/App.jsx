@@ -7,18 +7,23 @@ import Cadastro from "./paginas/Cadastro";
 import Habitos from "./paginas/Habitos";
 import Context from "./componentes/Context/contex";
 import React from "react";
+import Hoje from "./paginas/Hoje";
+
+
+
 
 function App() {
-  const [display, setDisplay] = useState('none');
+  const [dados, setDados] = useState({token:'', display:'none', texto:'Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!'});
   const [token, setToken] = useState('');
 
   return (
-    <Context.Provider value={{display, setDisplay}}>
+    <Context.Provider value={{dados, setDados}}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login setToken={setToken} />} />
+          <Route path="/" element={<Login />} />
           <Route path="/Cadastro" element={<Cadastro />} />
-          <Route path="/Habitos" element={<Habitos token={token} />} />
+          <Route path="/Hoje" element={<Hoje/>} />
+          <Route path="/Habitos" element={<Habitos/>} />
         </Routes>
       </BrowserRouter>
     </Context.Provider>
