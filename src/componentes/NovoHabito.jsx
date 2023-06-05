@@ -38,7 +38,6 @@ export default function NovoHabito() {
                     <Input
                         data-test="habit-name-input"
                         disabled={Desabilitar}
-                        type="text"
                         placeholder="nome do hábito"
                         required
                         value={name}
@@ -76,30 +75,34 @@ export default function NovoHabito() {
     )
     function DarPost(e) {
         e.preventDefault();
-
-        setDesabilitar(true)
-        setTimeout(() => {
-            const Url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
-        
-        const token = dados.token
-        const body = {
-            name,
-            days: ArrayDias
-        }
-        const config = {
-            headers: {
-                Authorization: token
+        if(name === ''){alert('o campo precisa estar preenchido')}
+        else{
+            setDesabilitar(true)
+            setTimeout(() => {
+                const Url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+            
+            const token = dados.token
+            const body = {
+                name,
+                days: ArrayDias
             }
+            const config = {
+                headers: {
+                    Authorization: token
+                }
+            }
+            const promisse = axios.post(Url, body, config)
+    
+            promisse.then(resposta => {
+                setDisplay("none")
+                ListarTarefas()
+    
+            })
+            promisse.catch(erro => alert(erro.response.data.message))
+            setDesabilitar(false)
+            
+            }, 3000)
         }
-        const promisse = axios.post(Url, body, config)
-
-        promisse.then(resposta => {
-            navigate('/Hoje')
-            ListarTarefas()
-        })
-        promisse.catch(erro => alert(erro.response.data.message))
-        setDesabilitar(false)
-        }, 3000)
     }
     function CancelarTarefa() {
 
