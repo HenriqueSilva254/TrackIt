@@ -7,7 +7,7 @@ import Button from "../componentes/button";
 import Logo from "../componentes/Logo";
 import Container from "../componentes/ContainerLogin";
 import StyledLink from "../componentes/Links";
-
+import { ThreeDots } from 'react-loader-spinner'
 import Context from "../componentes/Context/contex";
 import React, { useContext} from "react";
 import imagemLogo from '../imagens/logo.svg'
@@ -18,13 +18,15 @@ export default function Login(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const {dados, setDados} = useContext(Context) 
+    const [Desabilitar, setDesabilitar] = useState(false);
 
     const navigate = useNavigate();
 
     function logar(e){
-        
+      
     e.preventDefault();
-
+    setDesabilitar(true)
+    setTimeout(() => {
     const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login';
 
     const novoLogin = {email, password};
@@ -33,17 +35,19 @@ export default function Login(){
 
     promise.then( resposta => {
       
-      console.log(resposta.data.token);
-      const Token = {...dados}
-      Token.token = "Bearer " + resposta.data.token;
-      setDados(Token)
+      dados.token = "Bearer " + resposta.data.token;
+      dados.image = resposta.data.image
+      
+      console.log(dados)
 
-
-      navigate('/Hoje');
+      navigate('/hoje');
       
 
     });
     promise.catch( erro => alert(erro.response.data.message));
+    setDesabilitar(false)
+    }, 3000)
+    
     }
 
     return (
@@ -53,7 +57,8 @@ export default function Login(){
             </Logo>
           
           <form onSubmit={logar}>
-            <Input
+            <Input 
+              disabled={Desabilitar}
               data-test="email-input"
               type="email"
               placeholder="E-mail"
@@ -61,7 +66,8 @@ export default function Login(){
               value={email}
               onChange={ (e) => setEmail(e.target.value)}
             />
-            <Input
+            <Input 
+              disabled={Desabilitar}
               data-test="password-input"
               type="password"
               placeholder="Senha"
@@ -69,7 +75,10 @@ export default function Login(){
               value={password}
               onChange={ (e) => setPassword(e.target.value)}
             />
-            <Button data-test="login-btn" type="submit">Entrar</Button>
+            <Button disabled={Desabilitar} data-test="login-btn" type="submit">
+              {Desabilitar === true ? 
+              <ThreeDots color="#ffffff" height={60} width={60}/> : 'Entrar'}
+            </Button>
           </form>
     
           <StyledLink data-test="signup-link" to="/Cadastro">Não tem uma conta? Cadastre-se</StyledLink>

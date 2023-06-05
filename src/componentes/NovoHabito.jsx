@@ -7,6 +7,9 @@ import Context from "./Context/contex";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ListarTarefas from "./ListarTarefas";
+import Display from "./Context/adicionar";
+import { ThreeDots } from "react-loader-spinner";
+
 
 
 export default function NovoHabito() {
@@ -22,14 +25,19 @@ export default function NovoHabito() {
     const [ArrayDias, setArrayDias] = useState([])
     const [name, setname] = useState('')
     const { dados, setDados } = useContext(Context)
+    const { display, setDisplay } = useContext(Display)
+    const [Desabilitar, setDesabilitar] = useState(false);
+
     const navigate = useNavigate();
-    
+
 
     return (
         <div>
-            <HabitosCreat display={dados.display}>
+            <HabitosCreat display={display}>
                 <Container>
                     <Input
+                        data-test="habit-name-input"
+                        disabled={Desabilitar}
                         type="text"
                         placeholder="nome do hábito"
                         required
@@ -38,19 +46,26 @@ export default function NovoHabito() {
                     />
                     <ContainerDias>
                         {Dias.map((data, index) =>
-                            <Divdias
+                            <ButtonDias
+                                type="button"
+                                data-test="habit-day"
+                                disabled={Desabilitar}
                                 key={index}
                                 onClick={() => mudaCorDia(index)}
                                 cores={data.cor}
                             >
                                 {data.dia}
-                            </Divdias>)}
+                            </ButtonDias>)}
 
                     </ContainerDias>
 
                     <Save>
-                        <div onClick={desabiliatar}>Cancelar</div>
-                        <Button onClick={DarPost}>Salvar</Button>
+
+                        <div data-test="habit-create-cancel" onClick={CancelarTarefa}>Cancelar</div>
+                        <Button data-test="habit-create-save-btn" disabled={Desabilitar} onClick={DarPost}>
+                            {Desabilitar === true ?
+                                <ThreeDots color="#ffffff" height={60} width={60}/> : 'Salvar'}
+                        </Button>
                     </Save>
                 </Container>
 
@@ -62,7 +77,10 @@ export default function NovoHabito() {
     function DarPost(e) {
         e.preventDefault();
 
-        const Url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        setDesabilitar(true)
+        setTimeout(() => {
+            const Url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        
         const token = dados.token
         const body = {
             name,
@@ -76,23 +94,19 @@ export default function NovoHabito() {
         const promisse = axios.post(Url, body, config)
 
         promisse.then(resposta => {
-            alert("Tarefa Salva cm sucesso")
-            console.log(resposta)
             navigate('/Hoje')
             ListarTarefas()
         })
         promisse.catch(erro => alert(erro.response.data.message))
+        setDesabilitar(false)
+        }, 3000)
     }
-    function desabiliatar() {
-        if (dados.display !== "none") {
-            const Arraydados = { ...dados }
-            Arraydados.display = "none"
-            setDados(Arraydados)
+    function CancelarTarefa() {
 
-        }
+        setDisplay("none")
     }
 
-   
+
 
 
     function mudaCorDia(index) {
@@ -156,9 +170,14 @@ const Save = styled.div`
         bottom: -13px;
         width: 84px;
         height: 35px;
+        div{
+            position: relative;
+            top: 0px;
+            left: 0px;
+        }
     }
 `
-const Divdias = styled.div`
+const ButtonDias = styled.button`
     width: 30px;
     height: 30px;
     left: 240px;

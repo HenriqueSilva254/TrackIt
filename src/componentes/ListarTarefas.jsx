@@ -2,7 +2,7 @@ import axios from "axios"
 import { useContext, useState } from "react"
 import styled from "styled-components"
 import Context from "./Context/contex"
-
+import Lixeira from "../imagens/Group.png"
 
 
  //Dar GET nas Tarefas 
@@ -33,20 +33,22 @@ import Context from "./Context/contex"
     promisse.then(resposta => {
         const list = resposta.data
         
-        // for(let i=0; i < contador.length; i++){
-        //     Dias[contador[i]].cor = "#CFCFCF"
-        // }
         const Txt = {...dados}
         Txt.texto = ''
         setDados(Txt)
 
         setTarefas(list.map(props => 
             <HabitosCreat>
-                <Container>
-                    <h1>{props.name}</h1>
+                
+                <Container data-test="habit-container">
+                    <Nometarefa>
+                        <h1 data-test="habit-name">{props.name}</h1>
+                        <img data-test="habit-delete-btn" onClick={() =>  ExcluirTarefa(props.id)} src={Lixeira}/>
+                    </Nometarefa>
                     <ContainerDias>
                         {Dias.map((data, index) =>
-                            <Divdias
+                            <Divdias 
+                                data-test="habit-day"
                                 key={index}
                                 cores={index === props.days[0]?'#CFCFCF': 
                                 index === props.days[1]? '#CFCFCF': 
@@ -56,7 +58,6 @@ import Context from "./Context/contex"
                                 index === props.days[5]? '#CFCFCF':
                                 index === props.days[6]? '#CFCFCF':'white'
                             }
-                                
                             >
                                 {data.dia}
                             </Divdias>)}
@@ -72,6 +73,24 @@ import Context from "./Context/contex"
     return(
         <div>{Tarefas}</div>
     )
+    function ExcluirTarefa(id){
+        
+        
+        const Url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
+        const config = {
+            headers: {
+                Authorization: dados.token
+            }
+        }
+        const promisse = axios.delete(Url, config)
+
+        promisse.then(resposta => {
+            alert("Tarefa excluida cm sucesso")
+            ListarTarefas()
+        })
+        promisse.catch(erro => alert(erro.response.data.message))
+
+    }
 }
 export default ListarTarefas
 
@@ -86,6 +105,7 @@ const Container = styled.div`
     background: #FFFFFF;
     border-radius: 5px;
     padding: 13px 18px 18px 18px;
+    
     h1{
         font-family: 'Lexend Deca';
         font-style: normal;
@@ -96,6 +116,10 @@ const Container = styled.div`
         text-align: start;
         padding-bottom: 10px;
     }
+    img{
+            height: 15px;
+            width: 13px;
+        }
     
 `
 const ContainerDias = styled.div`
@@ -120,4 +144,9 @@ const Divdias = styled.div`
     font-size: 19.976px;
     line-height: 25px;
     color: ${props => props.cores === "white" ? '#D5D5D5' : 'white'};
+        
+`
+const Nometarefa = styled.div`    
+        display: flex;
+        justify-content: space-between;
 `
