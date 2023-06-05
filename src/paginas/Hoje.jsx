@@ -17,12 +17,8 @@ import confirm from '../imagens/Vector.png'
 function Hoje() {
     const { dados, setDados } = useContext(Context)
     const Dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
-    const [menssagem, setMenssagem] = useState({texto:'Nenhum hábito concluído ainda'})
-    const [Teste, setTeste] = useState([])
+    const [tarefas, settarefas] = useState([])
     const [porcentagem, setPorcentagem] = useState(0)
-    // length = 4  (se cliquei em 2)  x por cento é = 50% 
-    // 1/4 = 0,25 * 100 = 25 
-    // 3/4 = 0,75 * 100 = 75 
 
 
     useEffect(() => {
@@ -33,26 +29,34 @@ function Hoje() {
         <Background>
             <Topo data-test="header">
                 <h1>TrackIt </h1>
-                <img src="https://pbs.twimg.com/media/Fhm7_FbWQAQShM0.jpg" alt="" />
+                <img src={dados.image} alt="" />
             </Topo>
 
-            <Day>{Dias[dayjs().day()]}, {dayjs().format('DD/MM')}</Day>
-            <Alert>{menssagem.texto}</Alert>
+            <Day data-test="today">{Dias[dayjs().day()]}, {dayjs().format('DD/MM')}</Day>
+            <Alert data-test="today-counter" color={porcentagem === 0?  '#BABABA':'#8FC549'}>
+            {porcentagem === 0? 'Nenhum hábito concluído ainda' : `${(porcentagem/tarefas.length * 100).toFixed(0)}% dos hábitos concluídos`} 
+            </Alert>
 
-            {Teste.map(props =>
-                <Tarefas key={props.name}>
+            {tarefas.map(props =>
+                <Tarefas data-test="today-habit-container" key={props.name}>
                     <div>
-                        <h1>{props.name}</h1>
-                        <p>Sequência atual: {props.currentSequence}</p>
-                        <p>Seu recorde: {props.highestSequence}</p>
+                        <h1 data-test="today-habit-name">{props.name}</h1>
+                        
+                        <Sequencia data-test="today-habit-sequence" color={props.done === false? '#666666':'#8FC549'}>
+                        Sequência atual: <p> {props.currentSequence} dias</p> 
+                        </Sequencia>
+
+                        <Recorde data-test="today-habit-record" color={props.done === false? '#666666':'#8FC549'}>
+                            Seu recorde: <p>{props.highestSequence} dias</p>
+                        </Recorde>
                     </div>
-                    <Boxcheck color={props.done === false? '#EBEBEB':'#8FC549'} onClick={() => fazerChekin(props)} ><img src={confirm}/></Boxcheck>
+                    <Boxcheck data-test="today-habit-check-btn" color={props.done === false? '#EBEBEB':'#8FC549'} onClick={() => fazerChekin(props)} ><img src={confirm}/></Boxcheck>
                 </Tarefas>
             )}
 
             <Footer data-test="menu">
                 <Menu>
-                    <Link to={"/Habitos"} data-test="habit-link" >Hábitos</Link>
+                    <Link to={"/habitos"} data-test="habit-link" >Hábitos</Link>
                     <Link data-test="history-link" >Histórico</Link>
                 </Menu>
 
@@ -60,7 +64,7 @@ function Hoje() {
                     <Link>
                         <CircularProgressbar
                             data-test="today-link"
-                            value={0}
+                            value={porcentagem/tarefas.length * 100}
                             text='Hoje'
                             background
                             backgroundPadding={6}
@@ -79,6 +83,7 @@ function Hoje() {
     )
 
     function FazerGet(){
+        
         const Url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
         const token = dados.token
         const config = {
@@ -89,23 +94,20 @@ function Hoje() {
         const promisse = axios.get(Url, config)
 
         promisse.then(resposta => {
-            setTeste(resposta.data)
-            console.log(resposta) 
+            settarefas(resposta.data)
             const contador = resposta.data
-            let aumentar = porcentagem
-            if(porcentagem === 0){
+            let aumentar = 0
+            if(aumentar === 0){
+            
             for(let i= 0; i < contador.length; i++){
                 if(contador[i].done === true){
                     aumentar = aumentar + 1
-                    setPorcentagem(aumentar)
                 }
             }
             
             }
-            const calculo =  porcentagem / contador.length * 100
-            const novaMenssagem = {...menssagem}
-            novaMenssagem.texto = `${calculo}% dos hábitos concluídos`
-            setMenssagem(novaMenssagem)
+            setPorcentagem(aumentar)
+            
             
         })
         promisse.catch(erro => alert(erro.response.data.message))
@@ -114,7 +116,6 @@ function Hoje() {
 
     // () => fazerChekin(props.data.done)
     function fazerChekin(props){
-    console.log(dados.token)
     if(props.done === false){
         let aumentar = porcentagem
         aumentar = aumentar + 1
@@ -210,7 +211,7 @@ const Alert = styled.p`
     font-size: 17.976px;
     line-height: 22px;
 
-    color: #BABABA;
+    color: ${props => props.color};
 
 `
 
@@ -238,3 +239,26 @@ const Today = styled.div`
     left: 40%;
 
 `
+const Sequencia = styled.div`
+display: flex;
+align-items: center;
+
+p{
+    padding: 4px;
+    color: ${props => props.color};
+}
+    
+`
+
+const Recorde = styled.div`
+display: flex;
+align-items: center;
+
+p{
+    padding: 4px;
+    color: ${props => props.color};
+}
+   
+`
+
+

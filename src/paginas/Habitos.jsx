@@ -11,19 +11,20 @@ import Topo from "../componentes/Topo";
 import Background from "../componentes/Background";
 import MeusHabitos from "../componentes/meushabitos";
 import Menu from "../componentes/Menu";
+import Display from "../componentes/Context/adicionar";
 
 
 function Habitos(){
     const [CriarHabito, setCriarHabito] = useState("true")
     const {dados, setDados} = useContext(Context)
-
-   
+    const {display, setDisplay} = useContext(Display)
+    
 
     return (
         <Background>
         <Topo data-test="header">
             <h1>TrackIt </h1>
-            <img src="https://pbs.twimg.com/media/Fhm7_FbWQAQShM0.jpg" alt="" />
+            <img src={dados.image} alt="" />
         </Topo>
 
         <MeusHabitos>
@@ -39,7 +40,7 @@ function Habitos(){
                 <Link data-test="history-link" >Histórico</Link>
             </Menu>
             <Hoje>
-                <Link to="/Hoje">
+                <Link to="/hoje">
                     <CircularProgressbar
                         data-test="today-link"
                         value={66}
@@ -63,11 +64,10 @@ function Habitos(){
     function AdicionarHabitos(){
         // const habito = <NovoHabito />
         // const novoArray = habito;
-        if(dados.display === "none"){
-            const Arraydados = {...dados}
-            Arraydados.display = "flex"
-            setDados(Arraydados)
-        }
+            
+        setDisplay("flex")
+            
+            console.log(display)
         
         
     }
