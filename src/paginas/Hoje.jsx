@@ -29,7 +29,7 @@ function Hoje() {
         <Background>
             <Topo data-test="header">
                 <h1>TrackIt </h1>
-                <img src={dados.image} alt="" />
+                <img data-test="avatar" src={dados.image} alt="" />
             </Topo>
 
             <Day data-test="today">{Dias[dayjs().day()]}, {dayjs().format('DD/MM')}</Day>
@@ -46,7 +46,7 @@ function Hoje() {
                         Sequência atual: <p> {props.currentSequence} dias</p> 
                         </Sequencia>
 
-                        <Recorde data-test="today-habit-record" color={props.done === false? '#666666':'#8FC549'}>
+                        <Recorde data-test="today-habit-record" color={props.done === false? '#666666' : props.highestSequence > props.currentSequence? '#666666':'#8FC549'}>
                             Seu recorde: <p>{props.highestSequence} dias</p>
                         </Recorde>
                     </div>
@@ -61,9 +61,9 @@ function Hoje() {
                 </Menu>
 
                 <Today>
-                    <Link>
+                    <Link to={"/hoje"} data-test="today-link">
                         <CircularProgressbar
-                            data-test="today-link"
+                            
                             value={porcentagem/tarefas.length * 100}
                             text='Hoje'
                             background

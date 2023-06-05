@@ -81,7 +81,7 @@ export default function Login(){
             </Button>
           </form>
     
-          <StyledLink data-test="signup-link" to="/Cadastro">Não tem uma conta? Cadastre-se</StyledLink>
+          <StyledLink data-test="signup-link" to="/cadastro">Não tem uma conta? Cadastre-se</StyledLink>
         </Container>
       )
 }

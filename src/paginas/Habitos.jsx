@@ -24,7 +24,7 @@ function Habitos(){
         <Background>
         <Topo data-test="header">
             <h1>TrackIt </h1>
-            <img src={dados.image} alt="" />
+            <img data-test="avatar" src={dados.image} alt="" />
         </Topo>
 
         <MeusHabitos>
@@ -40,7 +40,7 @@ function Habitos(){
                 <Link to={"/historico"} data-test="history-link" >Histórico</Link>
             </Menu>
             <Hoje>
-                <Link to="/hoje">
+                <Link to="/hoje" data-test="today-link">
                     <CircularProgressbar
                         data-test="today-link"
                         value={66}
