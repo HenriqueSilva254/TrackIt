@@ -4,6 +4,8 @@ import Topo from "../componentes/Topo";
 import styled from "styled-components";
 import { useContext } from "react";
 import Context from "../componentes/Context/contex";
+import Menu from "../componentes/Menu";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 export default function Historico(){
 const {dados, setDados} = useContext(Context)
@@ -11,7 +13,7 @@ const {dados, setDados} = useContext(Context)
         <Background>
              <Topo data-test="header">
                 <h1>TrackIt </h1>
-                <img src={dados.image} alt="" />
+                <img data-test="avatar" src={dados.image} alt="" />
             </Topo>
             <Footer data-test="menu">
             <Titulo>
@@ -23,7 +25,7 @@ const {dados, setDados} = useContext(Context)
                 <Link to={"/historico"} data-test="history-link" >Histórico</Link>
             </Menu>
             <Hoje>
-                <Link to="/hoje">
+                <Link to="/hoje" data-test="today-link">
                     <CircularProgressbar
                         data-test="today-link"
                         value={66}
@@ -45,12 +47,34 @@ const {dados, setDados} = useContext(Context)
     )
 }
 const Titulo = styled.div`
+
     color:#126BA5;
-    width: 338px;
-    height: 74px;
+    padding-top: 22px;
+    margin-left: 18px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22.976px;
+    line-height: 29px;
+    P{
+    padding-top: 22px;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;
     font-size: 17.976px;
     line-height: 22px;
+    color: #666666;
+    }
+    
+`
+const Footer = styled.div`
+
+`   
+const Hoje = styled.div`
+    width: 91px;
+    height: 91px;
+    position: fixed;
+    bottom: 6px;
+    left: 40%;
+
 `

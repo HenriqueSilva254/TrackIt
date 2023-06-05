@@ -33,7 +33,7 @@ export default function NovoHabito() {
 
     return (
         <div>
-            <HabitosCreat display={display}>
+            <HabitosCreat display={display} data-test="habit-create-container"> 
                 <Container>
                     <Input
                         data-test="habit-name-input"
