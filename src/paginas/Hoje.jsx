@@ -57,7 +57,7 @@ function Hoje() {
             <Footer data-test="menu">
                 <Menu>
                     <Link to={"/habitos"} data-test="habit-link" >Hábitos</Link>
-                    <Link data-test="history-link" >Histórico</Link>
+                    <Link to={"/historico"} data-test="history-link" >Histórico</Link>
                 </Menu>
 
                 <Today>

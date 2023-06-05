@@ -7,9 +7,10 @@ import Cadastro from "./paginas/Cadastro";
 import Habitos from "./paginas/Habitos";
 import Context from "./componentes/Context/contex";
 import React from "react";
-import Hoje from "./paginas/hoje";
-import Display from "./componentes/Context/adicionar";
+import Hoje from "./paginas/Hoje";
 
+import Display from "./componentes/Context/adicionar";
+import Historico from "./paginas/Historic";
 
 
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/hoje" element={<Hoje/>} />
           <Route path="/habitos" element={<Habitos/>} />
+          <Route path="/historico" element={<Historico />} />
         </Routes>
       </Display.Provider>
       </BrowserRouter>

@@ -36,8 +36,8 @@ function Habitos(){
         
         <Footer data-test="menu">
             <Menu>
-                <Link data-test="habit-link" >Hábitos</Link>
-                <Link data-test="history-link" >Histórico</Link>
+                <Link to={"/habitos"} data-test="habit-link" >Hábitos</Link>
+                <Link to={"/historico"} data-test="history-link" >Histórico</Link>
             </Menu>
             <Hoje>
                 <Link to="/hoje">
