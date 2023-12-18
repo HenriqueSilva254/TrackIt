@@ -27,7 +27,11 @@ export default function Login(){
     e.preventDefault();
     setDesabilitar(true)
     setTimeout(() => {
+<<<<<<< HEAD
     const URL = import.meta.env.VITE_API_SIGNIN
+=======
+    const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login';
+>>>>>>> 2ab9fed7707f343275ce0159160c2f0d0489e614
 
     const novoLogin = {email, password};
 

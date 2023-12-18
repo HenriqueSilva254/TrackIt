@@ -25,6 +25,10 @@ Abra [http://localhost:3000](http://localhost:3000) para visualizá-lo no navega
 A página será recarregada se você fizer edições.\
 Você também verá erros de lint no console.
 
+### `.env`
+
+Voce devera criar um arquivo env para utilizar a api, seguindo os padroes do arquivo .env.exemple
+
 ### Deployment
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
