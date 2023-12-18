@@ -79,7 +79,7 @@ export default function NovoHabito() {
         else{
             setDesabilitar(true)
             setTimeout(() => {
-                const Url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+                const Url = import.meta.env.VITE_API_HABITS
             
             const token = dados.token
             const body = {

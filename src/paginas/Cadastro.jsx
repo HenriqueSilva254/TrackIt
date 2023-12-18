@@ -25,7 +25,7 @@ function Cadastro() {
     e.preventDefault();
     setDesabilitar(true)
     setTimeout(() => {
-    const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up';
+    const URL = import.meta.env.VITE_API_SIGNUP
 
     const body = { email, name, image, password };
     const promise = axios.post(URL, body);

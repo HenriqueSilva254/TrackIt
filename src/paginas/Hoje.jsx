@@ -84,7 +84,7 @@ function Hoje() {
 
     function FazerGet(){
         
-        const Url = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
+        const Url = import.meta.env.VITE_API_HABITS_TODAY
         const token = dados.token
         const config = {
             headers: {
@@ -121,7 +121,7 @@ function Hoje() {
         aumentar = aumentar + 1
         setPorcentagem(aumentar)
 
-        const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${props.id}/check`
+        const url = `${import.meta.env.VITE_API_HABITS}/${props.id}/check`
         const body= {} 
         const config = {
             headers: {
@@ -138,7 +138,7 @@ function Hoje() {
         aumentar = aumentar - 1
         setPorcentagem(aumentar)
         
-        const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${props.id}/uncheck`
+        const url = `${import.meta.env.VITE_API_HABITS}/${props.id}/uncheck`
         const body= {} 
         const config = {
             headers: {
