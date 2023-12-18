@@ -12,8 +12,6 @@ import Context from "../componentes/Context/contex";
 import React, { useContext} from "react";
 import imagemLogo from '../imagens/logo.svg'
 
-
-
 export default function Login(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -27,26 +25,17 @@ export default function Login(){
     e.preventDefault();
     setDesabilitar(true)
     setTimeout(() => {
-<<<<<<< HEAD
     const URL = import.meta.env.VITE_API_SIGNIN
-=======
-    const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login';
->>>>>>> 2ab9fed7707f343275ce0159160c2f0d0489e614
 
-    const novoLogin = {email, password};
-
+    const novoLogin = {email, password}
     const promise = axios.post(URL, novoLogin);
 
     promise.then( resposta => {
-      
+
       dados.token = "Bearer " + resposta.data.token;
       dados.image = resposta.data.image
-      
-      console.log(dados)
 
       navigate('/hoje');
-      
-
     });
     promise.catch( erro => alert(erro.response.data.message));
     setDesabilitar(false)
