@@ -31,4 +31,4 @@ Voce devera criar um arquivo env para utilizar a api, seguindo os padroes do arq
 
 ### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+This section has moved here: [https://track-it-henriquesilva254.vercel.app/](https://track-it-henriquesilva254.vercel.app/)
